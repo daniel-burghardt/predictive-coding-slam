@@ -1,0 +1,4 @@
+AMCL uses odometry for the position estimate (dead reckoning).
+Combines with laser information.
+
+Initial belief is at map origin (0, 0), with particles spread all over the map.
