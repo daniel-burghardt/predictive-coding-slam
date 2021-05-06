@@ -18,6 +18,7 @@ def has_tumbled(roll, pitch):
 
 if __name__ == '__main__':
     # Setup
+    amount_samples = 6000
     data = []
     rospy.init_node('sampler_node')
     get_coordinates = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
@@ -29,9 +30,9 @@ if __name__ == '__main__':
 
 
         # Set new robot's position
-        next_yaw = uniform(-math.pi, math.pi) # from -pi to pi  (radians)
-        next_x = uniform(-4.62, 4.62)
-        next_y = uniform(-12.63, 1.62)
+        next_yaw = math.pi  # uniform(-math.pi, math.pi) # from -pi to pi  (radians)
+        next_x = 4.32  # uniform(-4.62, 4.62)
+        next_y = uniform(-8.5, 8.5) # uniform(-12.63, 1.62)
         set_quaternion = tf.transformations.quaternion_from_euler(0., 0., next_yaw)
 
         next_state = ModelState()
@@ -96,10 +97,13 @@ if __name__ == '__main__':
 
 
         # Every 50 iterations, save data
-        if (i % 200 == 0):
+        if (i % amount_samples == 0):
             with open('data.json', 'w') as outfile:
                 json.dump(data, outfile)
             print("- saved -")
 
 
         i = i + 1;
+
+        if i > amount_samples:
+        	break
